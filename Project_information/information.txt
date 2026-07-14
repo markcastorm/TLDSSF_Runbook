@@ -1,0 +1,66 @@
+Follow the SIMBA pipeline architecture documented in:
+-D:\Projects\SIMBA-RUNBOOKS\AUSFEDGOVCF\Project_information\CLAUDE.md(full technical context)
+((D:\Projects\SIMBA-RUNBOOKS\AUSFEDGOVCF\config.py)
+(D:\Projects\SIMBA-RUNBOOKS\AUSFEDGOVCF\extractor.py)
+(D:\Projects\SIMBA-RUNBOOKS\AUSFEDGOVCF\file_generator.py)
+(D:\Projects\SIMBA-RUNBOOKS\AUSFEDGOVCF\main.py)
+(D:\Projects\SIMBA-RUNBOOKS\AUSFEDGOVCF\orchestrator.py)
+(D:\Projects\SIMBA-RUNBOOKS\AUSFEDGOVCF\README.md)
+(D:\Projects\SIMBA-RUNBOOKS\AUSFEDGOVCF\scraper.py)) so this are the files that make upt the claud.md  read them only if you dont udertand the claude.md file to save tokens
+
+Imanaged to tackle a verry difficult pdf  you can get someideas if you need  to(D:\Projects\SIMBA-RUNBOOKS\OIRS_Runbook\Project_information\Claude.md) (D:\Projects\SIMBA-RUNBOOKS\OIRS_Runbook\scraper.py)
+(D:\Projects\SIMBA-RUNBOOKS\OIRS_Runbook\orchestrator.py)(D:\Projects\SIMBA-RUNBOOKS\OIRS_Runbook\main.py)(D:\Projects\SIMBA-RUNBOOKS\OIRS_Runbook\file_generator.py)
+(D:\Projects\SIMBA-RUNBOOKS\OIRS_Runbook\extractor.py)(D:\Projects\SIMBA-RUNBOOKS\OIRS_Runbook\config.py)
+
+- D:\Projects\SIMBA-RUNBOOKS\Runbook_RELPRCLVLINDX\Project_information\PIPELINE_PROMPT.md (file skeletons + rules)
+
+Same structure: config.py, scraper.py, extractor.py, file_generator.py, orchestrator.py, main.py
+Same output: DATA .xls, META .xls, ZIP, master CSV update, timestamped + latest folders
+Same environment: Windows dev, Docker Linux production, all packages pre-installed, os.path.join() everywhere
+
+now weare getting started on a new runnbook(D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\TLDSSF_Runbook.docx) you can use a script to read xslx  you cant read them directly you lack that ability 
+Here is the xlsx version (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\TLDSSF_Q_DATA_20260713.xlsx) of the manual data
+(D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\TLDSSF_Q_DATA_20260713 - DATA.csv)
+here is the csv version 
+Meta  (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\TLDSSF_Q_META_20250124.xlsx)
+
+analyze them first before we started 
+thistime we will  have the config.py  add the necessary collumns mapinng since the sub headers and headers in the manual data will be exactly the way they are to every output and in the exact arrangemen  since they are absolute unless other wise
+remember they are absolute so store them in the config .py
+(D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\TLDSSF_Q_DATA_20260713 - DATA.csv)  analyze these files verry keenly they are verry important  lets get started
+the file is abit straight forward lets get started
+lets first start with the scraper.py 
+we need to  visit this link using selenium stealth ensure we mimic human clicks   and winreg too ensure it works for linux too other wise if it cant dont use it also ensure also works for headles true too
+lets visit this link (https://www.sso.go.th/wpr/main/knowledge/%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%AA%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9A%E0%B8%A3%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%87%E0%B8%B4%E0%B8%99%E0%B8%A5%E0%B8%87%E0%B8%97%E0%B8%B8%E0%B8%99_category_list-label_1_134_0)
+(D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\Screenshot 2026-07-13 125604.png) you will notice the site is in thai   normaly i use google translate but you ca make sure the script is context awware  first step here is the html sample of the page (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\sample1.txt)its 3000 lines so concentrate on only what you need   from itfirs ste3p is to sort the cookie section
+(<div id="cm" role="dialog" aria-modal="true" aria-hidden="false" aria-labelledby="c-ttl" aria-describedby="c-txt" class="bar" style="visibility: hidden;"><div id="c-inr"><div id="c-inr-i"><div id="c-ttl" role="heading" aria-level="2"><div class="font-sm-mobile">คุกกี้ที่สปส.ใช้</div><div style="text-align:right"><div style="width:100%;text-align:right;"><button type="button" id="btn-en" class="c-bn c_link" style="padding:4px; margin-right: 4px; width: auto;">EN</button><button type="button" id="btn-th" class="c-bn c_link" style="padding:4px; width: auto;">TH</button></div></div></div><div id="c-txt" style="text-align: justify; text-justify: inter-character;"><span id="desc-box">โดยทั่วไป สปส.ใช้คุกกี้ที่จำเป็นเพื่อให้เว็บไซต์ของสปส.ทำงานได้ ทั้งนี้ สปส.ยังต้องการติดตั้งคุกกี้วิเคราะห์เสริมเพื่อช่วยให้สปส.พัฒนาเว็บไซต์ของสปส.ให้มีประสิทธิภาพมากยิ่งขึ้น โดยสปส.จะไม่ติดตั้งคุกกี้เสริมใด ๆ เว้นแต่ท่านได้เปิดใช้งานคุกกี้เหล่านั้น การใช้เครื่องมือนี้จะเป็นการติดตั้งคุกกี้บนอุปกรณ์ของท่านเพื่อบันทึกการตั้งค่าของท่าน
+สำหรับข้อมูลเพิ่มเติมเกี่ยวกับ คุกกี้คืออะไร สปส.ใช้คุกกี้อย่างไร และสปส.ใช้คุกกี้ประเภทใด
+โปรดดูนโยบายคุกกี้ของสปส. คลิก</span> <button type="button" data-cc="c-settings" class="cc-link" aria-haspopup="dialog">รายละเอียด</button></div></div><div id="c-bns"><button type="button" id="c-p-bn" class="c-bn">ยอมรับทั้งหมด</button><button type="button" id="c-s-bn" class="c-bn c_link">ปฏิเสธทั้งหมด</button><button type="button" id="c-cancel-bn" class="c-bn c_link">ปิด</button></div></div></div>)
+we ensure we accept all cookies  by clicking the button like  human dynamicaly to avoid detection   ne we analyze the social security fun reports  check for the latest or the specific date report depends with what the config saya if it says None we always look for the latest report  you can see this is my latest report on the list (<div class="col-sm-12 mar-l20 region_716">
+                                                                    <a title="" href="https://www.sso.go.th/wpr/assets/upload/files_storage/sso_th/615b8aa3660415bebb311bcde6c23180.pdf" target="_blank">
+                                                                        <div class="h5 font-sty-nomal">
+                                                                            <span class="fa fa-download h8"></span>
+                                                                            รายงานสถานะการบริหารเงินลงทุนกองทุนประกันสังคม ไตรมาสที่ 4 ณ 31 ธันวาคม 2567                                                                        </div>
+                                                                    </a>
+                                                                </div>)
+                                                                 this search has to be dynamic not hardcoded elememnt can use text based  detiming which report link you need the click it 
+it will open a pdf viewer page in a anew tab we need to trigere a download of the pdf save it in the downloads folder with timestaped subfolders for every run 
+here is a sample of the pdf (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\615b8aa3660415bebb311bcde6c23180.pdf) its typicaly a 2 page pdf  
+based on the runbook (2. We want to scrape the pie chart below. Produce one quarterly DF series for each line-item in the pie chart. Use
+Google Translate to assist with translation--I listed the asset name pairings starting with the largest category and
+rotating clockwise. Capture the assets value (not %). Additionally, capture the total assets value (red).) (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\Screenshot 2026-07-13 143059.png) you can see the mapping (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\Screenshot 2026-07-13 143200.png) 
+its very straigh forwar we are analyzing a chart  and picking the values and the total not percentagess its usually on the first page here are sample screenshots (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\sample Pdfs\sample screenshots)
+like this is the latest pdf availaable (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Project_information\Screenshot 2026-07-13 143722.png)
+on the earlier pdfs its an image  the chart its self but on the latest ons we have text  you can see i can select it  meaning we can pull it  so we can us fitz to find the chante ad then  use  try extracting the full page and there positions analyze then try figuring how to perform the extraction on one pdf first    figur out the mapping the subheaders of the sample output are like 
+like from this (หน่วยลงทุนตราสารหนี
+ต่างประเทศที่ไม่ได้รับการจัด
+อันดับความน่าเชื่อถือ,
+46,324 , 1.74%)  we have this values  (46,324)
+ not the percentage then the totala  is in a cell or box  (2,657,245 ล้านบาท )  
+ our script ewill need to understand Thai language to be dynamic     the maping will b direct arcording to the sample output 
+ as you see straight for ward (	TLD Social Security Fund: Domestic Government Bonds	TLD Social Security Fund: Foreign Bonds	TLD Social Security Fund: Deposits	TLD Social Security Fund: Corporate Bonds	TLD Social Security Fund: Other Bonds	TLD Social Security Fund: Domestic Equities	TLD Social Security Fund: Foreign Equities	TLD Social Security Fund: Alternatives	TLD Social Security Fund: Total																	)
+those subheaders will guide toy on what we need lts first start with the ones we can extract create a test script test one pdf at a time for those that are an image we will have to resord to ocr   but we ensure its as dynamic as possible  
+
+lets do thorough test we will mapp the results to the master (D:\Projects\SIMBA-RUNBOOKS\TLDSSF_Runbook\Master Data\Master_Data_TLDSSF_Q_DATA.csv) for that quater is its not available to avoid duplicated ad a check at the begining of the pipeling to check for data that aavailble to avoid downloading and procesing twice 
+
+the new quater data will be appended on the  master without inter fearing with already existing data being surgical is key to avoid data coruption  then the master will b duplicated as the new output xlsx file in the output folder with timestamped subfolders for every run and  latest subfolder  that will always hold the latest files in every run with a cleanup function  analyze then start developmemt 
