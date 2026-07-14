@@ -8,15 +8,13 @@ MASTER_CSV   = os.path.join(BASE_DIR, 'Master Data', 'Master_Data_TLDSSF_Q_DATA.
 
 # ── Source ────────────────────────────────────────────────────────────────────
 BASE_URL = (
-    'https://www.sso.go.th/wpr/main/knowledge/'
-    '%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%87%E0%B8%B2%E0%B8%99'
-    '%E0%B8%AA%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%81%E0%B8%B2'
-    '%E0%B8%A3%E0%B8%9A%E0%B8%A3%E0%B8%B4%E0%B8%AB%E0%B8%B2'
-    '%E0%B8%A3%E0%B9%80%E0%B8%87%E0%B8%B4%E0%B8%99%E0%B8%A5'
-    '%E0%B8%87%E0%B8%97%E0%B8%B8%E0%B8%99'
-    '_category_list-label_1_134_0'
+    'https://www.sso.go.th/wpr/main/custom/'
+    'custom_detail_detail_1_160_0/452_452/'
+    '?site=1&page=preview&id=452'
 )
-# Decoded Thai path: รายงานสภาพการบริหารเงินลงทุน_category_list-label_1_134_0
+# Older report hrefs on this page are relative (e.g. 'ad/files_storage/...')
+# and must be resolved against this base for downloading.
+SITE_ROOT = 'https://www.sso.go.th'
 
 # ── Target date ───────────────────────────────────────────────────────────────
 # None  → always pick the latest available report

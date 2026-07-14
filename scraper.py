@@ -244,6 +244,9 @@ def _try_direct_requests():
             text = a.get_text(' ', strip=True)
             if not href.lower().endswith('.pdf'):
                 continue
+            # Resolve relative URLs (older reports use 'ad/files_storage/...')
+            if not href.startswith('http'):
+                href = config.SITE_ROOT + '/' + href.lstrip('/')
             quarter_key, sort_key = _parse_report_text(text)
             if quarter_key:
                 reports.append({

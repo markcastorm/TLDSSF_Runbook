@@ -10,6 +10,11 @@ import sys
 
 import orchestrator
 
+# Windows console defaults to cp1252 which can't encode Thai text or arrows.
+# Reconfigure stdout to UTF-8 before the logging handler is attached.
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s  %(levelname)-8s  %(name)s  %(message)s',

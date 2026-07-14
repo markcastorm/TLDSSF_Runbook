@@ -2,7 +2,8 @@
 Orchestrates the TLDSSF pipeline:
   scraper → extractor → file_generator
 
-Returns True on success, False if skipped (already in master).
+Always produces a timestamped output folder and updates output/latest/.
+Master CSV is only appended to when the quarter is genuinely new.
 """
 
 import logging
