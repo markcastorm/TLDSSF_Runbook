@@ -173,7 +173,17 @@ def _extract_text_based(raw_text):
         if PCT_ONLY.match(line):
             continue
 
-        # 1. VALUE_PCT: label_chunk, VALUE , PCT% — all on this line
+        # 1. PURE_VALPC: VALUE , PCT% — line starts with value (no Thai label prefix).
+        # Must be checked BEFORE VALUE_PCT: VALUE_PCT uses .search() and would otherwise
+        # match mid-number commas (e.g. captures '315,539' from '1,315,539 , 43.34%').
+        m = PURE_VALPC.match(line)
+        if m:
+            val = int(m.group(1).replace(',', ''))
+            _flush(label_buf, val)
+            label_buf = []
+            continue
+
+        # 2. VALUE_PCT: label_chunk, VALUE , PCT% — all on this line
         m = VALUE_PCT.search(line)
         if m:
             val = int(m.group(1).replace(',', ''))
@@ -184,7 +194,7 @@ def _extract_text_based(raw_text):
             label_buf = []
             continue
 
-        # 2. VALUE_ONLY: label_chunk, VALUE , <end-of-line> — trailing comma; pct on next line
+        # 3. VALUE_ONLY: label_chunk, VALUE , <end-of-line> — trailing comma; pct on next line
         m = VALUE_ONLY.search(line)
         if m:
             val = int(m.group(1).replace(',', ''))
@@ -195,7 +205,7 @@ def _extract_text_based(raw_text):
             label_buf = []
             continue
 
-        # 3. VALUE_TRAIL: label_chunk, VALUE<end-of-line> — no trailing comma; ',PCT%' on next line
+        # 4. VALUE_TRAIL: label_chunk, VALUE<end-of-line> — no trailing comma; ',PCT%' on next line
         m = VALUE_TRAIL.search(line)
         if m:
             val = int(m.group(1).replace(',', ''))
@@ -206,21 +216,13 @@ def _extract_text_based(raw_text):
             label_buf = []
             continue
 
-        # 4. VALUE_LAXEND: ', VALUE ,' followed by non-numeric OCR garbage
+        # 5. VALUE_LAXEND: ', VALUE ,' followed by non-numeric OCR garbage
         m = VALUE_LAXEND.search(line)
         if m:
             val = int(m.group(1).replace(',', ''))
             pre = line[:m.start()].strip().strip(',').strip()
             if pre:
                 label_buf.append(pre)
-            _flush(label_buf, val)
-            label_buf = []
-            continue
-
-        # 5. PURE_VALPC: VALUE , PCT% — standalone (accumulated label is in buf)
-        m = PURE_VALPC.match(line)
-        if m:
-            val = int(m.group(1).replace(',', ''))
             _flush(label_buf, val)
             label_buf = []
             continue
